@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tot_tracker/signup.dart';
-import 'package:tot_tracker/main.dart';
+import 'package:tot_tracker/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: <Widget>[
                       inputFile(label: "Email"),
-                      inputFile(label: "Password", obscureText: true)
+                      //inputFile(label: "Password", obscureText: true)
                     ],
                   ),
                 ),
@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   //Adds a border around the login button
                   child: Container(
-                    padding: EdgeInsets.only(top: 1, left: 1),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         border: Border(
@@ -82,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 60,
                       //When pressed it brings you to home screen nav page
                       onPressed: () {
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => Nav()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
                       },
                       color: Color(0xff0095FF),
                       elevation: 0,
