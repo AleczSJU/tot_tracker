@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tot_tracker/login.dart';
-import 'package:tot_tracker/main.dart';
+import 'package:tot_tracker/dashboard.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -84,7 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: () {
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => Nav()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
                   },
                   color: Color(0xff0095FF),
                   elevation: 0,
