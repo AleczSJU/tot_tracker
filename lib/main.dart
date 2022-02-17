@@ -6,12 +6,12 @@ void main() {
   //runApp(const MyApp());
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomePage(),
+    home: WelcomePage(),
   ));
 }
 
-class HomePage extends StatelessWidget {
-   const HomePage({Key? key}) : super(key: key);
+class WelcomePage extends StatelessWidget {
+   const WelcomePage({Key? key}) : super(key: key);
 
    // This widget is the root of your application.
    @override

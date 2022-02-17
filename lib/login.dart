@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tot_tracker/signup.dart';
 import 'package:tot_tracker/main.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 60,
                       //When pressed it brings you to home screen nav page
                       onPressed: () {
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => Nav()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
                       },
                       color: Color(0xff0095FF),
                       elevation: 0,
