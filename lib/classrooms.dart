@@ -61,7 +61,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
           body: TabBarView(
             children: <Widget>[
               Scaffold(
-                body: Center(
+                body: Container(
                   child: TableCalendar(
                     firstDay: DateTime.utc(2010, 10, 16),
                     lastDay: DateTime.utc(2030, 3, 14),
@@ -89,6 +89,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                       _focusedDay = focusedDay;
                     },
                   ),
+
                 ),
                 floatingActionButton: FloatingActionButton(
                   child: Icon(Icons.add),
