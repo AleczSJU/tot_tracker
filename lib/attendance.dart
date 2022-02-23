@@ -34,15 +34,24 @@ class _AttendancePageState extends State<AttendancePage> {
           ),
           body: TabBarView(
             children: <Widget>[
-              Container(
-                child: ListView.builder(
-                 //How many posts show up on home page
-                  itemCount: 10,
-                  //Calls the function to build the card for each post
-                  itemBuilder: (BuildContext context, int index){
-                     return CheckInCard();
-                   },
-                 )
+              Scaffold(
+                body: GridView.count(
+                  crossAxisCount: 3,
+                  //padding: const EdgeInsets.all(0),
+                  children: List.generate(100, (index) {
+                    return Center(
+                      child: CheckInCard(),
+                    );
+                  }),
+                ),
+                // child: ListView.builder(
+                //  //How many posts show up on home page
+                //   itemCount: 10,
+                //   //Calls the function to build the card for each post
+                //   itemBuilder: (BuildContext context, int index){
+                //      return CheckInCard();
+                //    },
+                //  )
               ),
               Container(
                   child: ListView.builder(

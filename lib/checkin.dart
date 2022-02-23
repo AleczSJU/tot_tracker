@@ -6,179 +6,49 @@ class CheckInCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      //Size of card
-      aspectRatio: 2,
-      child: Card(
-        elevation: 2,
-        child: Container(
-          margin: const EdgeInsets.all(4.0),
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            children: <Widget>[
-              //Shows the post of the user with info
-              _Card(),
-              Divider(color: Colors.grey),
-              //Shows users profile image and contact info at bottom
-              _CardDetails(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Card extends StatelessWidget {
-  const _Card({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Row(
-        children: <Widget>[
-          //All info of user
-          _CardNameAndInfo(),
-          //Image user posts
-          _CardImage(),
-        ],
-      ),
-    );
-  }
-}
-
-class _CardNameAndInfo extends StatelessWidget {
-  const _CardNameAndInfo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final String name = "Alec Zubyk";
-    final String dob = "January 26, 2000";
-    final String age = "22";
-    final String classroom = "Starfish";
-
-    return Expanded(
-      flex: 4,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 4.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(name, style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-            ),
-            ),
-            SizedBox(height: 10.0),
-            Text("Classroom: " + classroom, style: TextStyle(
-              //fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-            ),
-            Text("Age: " + age, style: TextStyle(
-              //fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-            ),
-            Text("DOB: " + dob, style: TextStyle(
-              //fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CardImage extends StatelessWidget {
-  const _CardImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Expanded(
-      flex: 2,
-      //Image user posts
-      //For now it is just a random downloaded image
-      //child: Image.asset(DemoValues.userImage),
-      child: Icon(Icons.people),
-    );
-  }
-}
-
-class _CardDetails extends StatelessWidget {
-  const _CardDetails({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        //Displays user profile image and contact info at bottom
-        //_UserImage(),
-        _UserNumberAndEmail(),
-        _CheckInButton(),
-      ],
-    );
-  }
-}
-
-class _UserNumberAndEmail extends StatelessWidget {
-  const _UserNumberAndEmail({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            //Gets the values from the DemoValues file for now
-            Text("222-111-2222"),
-            Text("azubyk@gmail.com"),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// class _UserImage extends StatelessWidget {
-//   const _UserImage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       flex: 1,
-//         child: Icon(Icons.people),
-//       // child: CircleAvatar(
-//       //   //Profile image for the user
-//       //   backgroundImage: AssetImage(DemoValues.userImage),
-//       // ),
-//     );
-//   }
-// }
-
-class _CheckInButton extends StatelessWidget {
-  const _CheckInButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
-      child: TextButton(
-        child: Text('Check-in', style: TextStyle(fontSize: 20.0)),
-        style: TextButton.styleFrom(
-          primary: Colors.white,
-          backgroundColor: Colors.blue,
-        ),
-        onPressed: () {},
+      child: Card(
+          color: Colors.white,
+          child: InkWell(
+              // onTap: () {
+              //   Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
+              // },
+              onTap: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Check-in'),
+                  content: const Text('Would you like to check-in user'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Yes'),
+                      child: const Text('Yes'),
+                    ),
+                  ],
+                ),
+              ),
+              splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height / 14,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/teacher.png")
+                          )
+                      ),
+                    ),
+                    Text("Alec Zubyk", style: TextStyle(color: Colors.black, height: 4.0, fontSize: 15)),
+                  ],
+                ),
+              )
+          )
       ),
     );
   }
 }
-
