@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tot_tracker/attendance.dart';
 
 class CheckInCard extends StatelessWidget {
-  const CheckInCard({Key? key}) : super(key: key);
+  final String name;
+  const CheckInCard({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class CheckInCard extends StatelessWidget {
                           )
                       ),
                     ),
-                    Text("Alec Zubyk", style: TextStyle(color: Colors.black, height: 4.0, fontSize: 15)),
+                    Text(name, style: TextStyle(color: Colors.black, height: 4.0, fontSize: 15)),
                   ],
                 ),
               )
