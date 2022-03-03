@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tot_tracker/checkout.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+List teachers = [];
+int i = 0;
 
 class StaffPage extends StatefulWidget {
   const StaffPage({Key? key}) : super(key: key);
@@ -9,6 +14,28 @@ class StaffPage extends StatefulWidget {
 }
 
 class _StaffPageState extends State<StaffPage> {
+  getTeachers()async {
+    //Local usage
+    var url = Uri.http('10.0.0.144', 'getAllTeachers.php');
+    //Non-local usage
+    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        teachers = json.decode(response.body);
+      });
+      print(teachers);
+      print(teachers.length);
+      return teachers;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTeachers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +49,10 @@ class _StaffPageState extends State<StaffPage> {
       body: Container(
           child: ListView.builder(
             //How many posts show up on home page
-            itemCount: 20,
+            itemCount: teachers.length,
             //Calls the function to build the card for each post
             itemBuilder: (BuildContext context, int index){
+              i = index;
               return AspectRatio(
                 //Size of card
                 aspectRatio: 2.5,
@@ -88,18 +116,18 @@ class _CardNameAndInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(name, style: TextStyle(
+            Text(teachers[i]['name'], style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
             ),
             SizedBox(height: 10.0),
-            Text("Classroom: " + classroom, style: TextStyle(
+            Text("Classroom: " + teachers[i]['classroom'], style: TextStyle(
               //fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
             ),
-            Text("Age: " + age, style: TextStyle(
+            Text("Age: " + teachers[i]['age'], style: TextStyle(
               //fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
@@ -162,12 +190,12 @@ class _CardNumberAndEmail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             //Gets the values from the DemoValues file for now
-            Text("222-333-4444", style: TextStyle(
+            Text(teachers[i]['phone_number'], style: TextStyle(
               //fontWeight: FontWeight.bold,
               fontSize: 12,
             ),
             ),
-            Text("azubyk@gmail.com", style: TextStyle(
+            Text(teachers[i]['email'], style: TextStyle(
               //fontWeight: FontWeight.bold,
               fontSize: 12,
             ),

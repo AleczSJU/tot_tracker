@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tot_tracker/calendar.dart';
-import 'package:mysql1/mysql1.dart';
 import 'package:http/http.dart' as http;
 
 class ClassroomsPage extends StatefulWidget {
@@ -20,7 +19,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
   late TabController _tabController;
 
   getAllClassrooms()async{
-    var url = Uri.http('68.82.13.214', 'roomTest.php');
+    var url = Uri.http('68.82.13.214', 'getClassrooms.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -57,7 +56,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
     super.initState();
     getAllClassrooms();
     getTabs();
-    _tabController = TabController(vsync: this, length: 8);
+    _tabController = TabController(vsync: this, length: _tabs.length);
     print(_tabController);
   }
 

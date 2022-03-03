@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tot_tracker/checkin.dart';
 import 'package:tot_tracker/checkout.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -10,9 +12,34 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
+  List names = [];
+
+  getChildNames()async {
+    //Local usage
+    var url = Uri.http('10.0.0.144', 'getChildNames.php');
+    //Non-local usage
+    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        names = json.decode(response.body);
+      });
+      print(names);
+      print(names.length);
+      return names;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getChildNames();
+    //print(names);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final names = ['Alec Zubyk', 'Michelle Zubyk', 'Andrew Zubyk', 'Jack Zubyk', 'John Zubyk'];
+    final namesIn = ['Alec Zubyk', 'Michelle Zubyk', 'Andrew Zubyk', 'Jack Zubyk', 'John Zubyk'];
     final namesOut = ['Test man', 'Test woman', 'Signed out', 'Nicholas Alephranso'];
     return MaterialApp(
       home: DefaultTabController(
@@ -86,7 +113,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[index], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(names[index]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
@@ -104,7 +131,7 @@ class _AttendancePageState extends State<AttendancePage> {
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 1
                   ),
-                  itemCount: namesOut.length,
+                  itemCount: names.length,
                   itemBuilder: (BuildContext context, index) {
                     return Container(
                       alignment: Alignment.center,
@@ -146,7 +173,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(namesOut[index], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(names[index]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
