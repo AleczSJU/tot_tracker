@@ -57,7 +57,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
     super.initState();
     getAllClassrooms();
     getTabs();
-    _tabController = TabController(vsync: this, length: 8);
+    _tabController = TabController(vsync: this, length: _tabs.length);
     print(_tabController);
   }
 
