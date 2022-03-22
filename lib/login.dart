@@ -98,26 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                //Text below login button
-                //User can press "Sign up" and it brings them to sign up page
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Don't have an account?  "),
-                    new GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
-                      },
-                      child: new Text("Sign up",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Color(0xff0095FF)
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 //Container is used to add image to bottom of screen
                 Container(
                   padding: EdgeInsets.only(top: 100),

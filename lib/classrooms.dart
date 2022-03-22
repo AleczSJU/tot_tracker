@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:tot_tracker/calendar.dart';
+import 'package:tot_tracker/roomPage.dart';
 import 'package:http/http.dart' as http;
+
+List roomNames = [];
+int i = 0;
 
 class ClassroomsPage extends StatefulWidget {
   const ClassroomsPage({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class ClassroomsPage extends StatefulWidget {
   _ClassroomsPageState createState() => _ClassroomsPageState();
 }
 
-class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStateMixin {
+class _ClassroomsPageState extends State<ClassroomsPage> {
   List<Tab> _tabs = <Tab>[];
   List<Widget> _tabViews = [];
   List<dynamic> tabNames = [];
@@ -23,24 +25,22 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
-        tabNames = json.decode(response.body);
+        roomNames = json.decode(response.body);
       });
-      print(tabNames);
-      print(tabNames.length);
-      numTabs = tabNames.length;
+      print(roomNames);
       //numTabs = tabNames.length;
-      return tabNames;
+      return roomNames;
     }
   }
 
-  getTabs(){
-    for (var i = 0; i < tabNames.length; i++) {
-      _tabs.add(Tab(child: Text(tabNames[i]['name']),));
-      _tabViews.add(Scaffold(body: Calendar()));
-    }
-    //print(_tabs.length);
-    return _tabs;
-  }
+  // getTabs(){
+  //   for (var i = 0; i < tabNames.length; i++) {
+  //     _tabs.add(Tab(child: Text(tabNames[i]['name']),));
+  //     _tabViews.add(Scaffold(body: Calendar()));
+  //   }
+  //   //print(_tabs.length);
+  //   return _tabs;
+  // }
 
   // getTabsViews(){
   //   for (var i = 0; i < _tabs.length; i++) {
@@ -55,9 +55,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
   void initState() {
     super.initState();
     getAllClassrooms();
-    getTabs();
-    _tabController = TabController(vsync: this, length: _tabs.length);
-    print(_tabController);
+    // _tabController = TabController(vsync: this, length: _tabs.length);
+    // print(_tabController);
   }
 
   @override
@@ -72,16 +71,52 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: const Text('Classrooms'),
-            bottom: PreferredSize(
-              child: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                unselectedLabelColor: Colors.white.withOpacity(0.3),
-                indicatorColor: Colors.white,
-                tabs: _tabs,
-              ),
-                preferredSize: Size.fromHeight(30.0),
+            // bottom: PreferredSize(
+            //   child: TabBar(
+            //     controller: _tabController,
+            //     isScrollable: true,
+            //     unselectedLabelColor: Colors.white.withOpacity(0.3),
+            //     indicatorColor: Colors.white,
+            //     tabs: _tabs,
+            //   ),
+            //     preferredSize: Size.fromHeight(30.0),
+            // ),
+          ),
+          body: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 1,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 1
             ),
+            itemCount: roomNames.length,
+            itemBuilder: (BuildContext context, index) {
+              i = index;
+              return Container(
+                alignment: Alignment.center,
+                child: Card(
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RoomPage(className: roomNames[index]['name'])));
+                      },
+                      splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(child: Icon(Icons.home, size:50.0, color:Colors.black)),
+                            Text(roomNames[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 20, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      )
+                  ),
+                ),
+              );
+            },
           ),
           // body: Center(
           //   child: Column(
@@ -92,14 +127,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> with TickerProviderStat
           //     ],
           //   ),
           // ),
-          body: TabBarView(
-            controller: _tabController,
-            children: _tabViews,
-          ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
+          // body: TabBarView(
+          //   controller: _tabController,
+          //   children: _tabViews,
+          // ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {},
+        //   child: Icon(Icons.add),
+        // ),
       //),
     );
   }

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Calendar extends StatefulWidget {
-  const Calendar({Key? key}) : super(key: key);
+  const Calendar({Key? key, required this.className}) : super(key: key);
+  final String className;
 
   @override
   _CalendarState createState() => _CalendarState();
 }
 
 class _CalendarState extends State<Calendar> {
+  String name = '';
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
   @override
   Widget build(BuildContext context) {
+    name = widget.className;
     return Scaffold(
       body: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 16),

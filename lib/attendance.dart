@@ -4,6 +4,9 @@ import 'package:tot_tracker/checkout.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+List names = [];
+int i = 0;
+
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
 
@@ -12,13 +15,12 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  List names = [];
 
   getChildNames()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getChildNames.php');
+    //var url = Uri.http('10.0.0.144', 'getChildNames.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var url = Uri.http('68.82.13.214', 'getChildNames.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -73,6 +75,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   ),
                   itemCount: names.length,
                   itemBuilder: (BuildContext context, index) {
+                    i = index;
+                    String signin = 'Would you like to sign-in ' + names[i]['name'] + '?';
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -86,7 +90,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                   title: const Text('Check-in'),
-                                  content: const Text('Would you like to check-in user'),
+                                  content: Text(signin),
                                   actions: <Widget>[
                                     TextButton(
                                       child: const Text('Cancel'),
@@ -113,7 +117,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[index]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(names[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
@@ -133,6 +137,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   ),
                   itemCount: names.length,
                   itemBuilder: (BuildContext context, index) {
+                    i = index;
+                    String signout = 'Would you like to sign-out ' + names[i]['name'] + '?';
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -146,7 +152,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                   title: const Text('Check-in'),
-                                  content: const Text('Would you like to check-out user'),
+                                  content: Text(signout),
                                   actions: <Widget>[
                                     TextButton(
                                       child: const Text('Cancel'),
@@ -173,7 +179,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[index]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(names[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )

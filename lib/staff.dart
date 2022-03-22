@@ -16,9 +16,9 @@ class StaffPage extends StatefulWidget {
 class _StaffPageState extends State<StaffPage> {
   getTeachers()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getAllTeachers.php');
+    //var url = Uri.http('10.0.0.144', 'getAllTeachers.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var url = Uri.http('68.82.13.214', 'getAllTeachers.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
