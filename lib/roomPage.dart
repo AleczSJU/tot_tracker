@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tot_tracker/calendar.dart';
 import 'package:http/http.dart' as http;
 
+List names = [];
+int i = 0;
+
 class RoomPage extends StatefulWidget {
   const RoomPage({Key? key, required this.className}) : super (key: key);
   final String className;

@@ -21,7 +21,10 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   late TabController _tabController;
 
   getAllClassrooms()async{
-    var url = Uri.http('68.82.13.214', 'getClassrooms.php');
+    //Local usage
+    var url = Uri.http('10.0.0.144', 'getClassrooms.php');
+    //Non-local usage
+    //var url = Uri.http('68.82.13.214', 'getClassrooms.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
