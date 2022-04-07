@@ -19,7 +19,6 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
   String name = '';
 
   getChildrenInRoom()async{
-    var queryParameters = 'Angelfish';
     //Local usage
     var url = Uri.http('10.0.0.144', 'getChildrenInRoom.php', {"className":name});
     //Non-local usage
@@ -65,7 +64,6 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
         itemCount: children.length,
         itemBuilder: (BuildContext context, index) {
           i = index;
-          String signin = 'Would you like to sign-in ' + children[i]['child_id'] + '?';
           return Container(
             alignment: Alignment.center,
             //child: _sendDataToCheckIn(names[index]),

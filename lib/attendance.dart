@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tot_tracker/checkin.dart';
-import 'package:tot_tracker/checkout.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 List names = [];
 List signedIn = [];
+List signedOut = [];
 int i = 0;
 
 class AttendancePage extends StatefulWidget {
@@ -17,43 +16,77 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
 
-  getChildNames()async {
-    //Local usage
-    var url = Uri.http('10.0.0.144', 'getChildNames.php');
-    //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      setState(() {
-        names = json.decode(response.body);
-      });
-      print(names);
-      print(names.length);
-      return names;
-    }
-  }
+  // getChildNames()async {
+  //   //Local usage
+  //   //var url = Uri.http('10.0.0.144', 'getChildNames.php');
+  //   //Non-local usage
+  //   var url = Uri.http('68.82.13.214', 'getChildNames.php');
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       names = json.decode(response.body);
+  //     });
+  //     print(names);
+  //     print(names.length);
+  //     return names;
+  //   }
+  // }
 
-  getSignedInNames()async {
+  getSignedIn()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
         signedIn = json.decode(response.body);
       });
-      print(signedIn);
-      print(signedIn.length);
-      return signedIn;
     }
+    print(signedIn);
+    print(signedIn.length);
+    return signedIn;
+  }
+
+  getSignedOut()async {
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        signedOut = json.decode(response.body);
+      });
+    }
+    print(signedOut);
+    print(signedOut.length);
+    return signedOut;
   }
 
   @override
   void initState() {
     super.initState();
-    getChildNames();
-    getSignedInNames();
+    //getChildNames();
+    getSignedIn();
+    getSignedOut();
+    //print(names);
+  }
+
+  _signInChild(int child_id)async{
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'signIn.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'signIn.php', {"childid":child_id});
+    var response = await http.get(url);
+    // if (response.statusCode == 200) {
+    //   setState(() {
+    //     signedOut = json.decode(response.body);
+    //   });
+    // }
+    // print(signedOut);
+    // print(signedOut.length);
+    // return signedOut;
   }
 
   @override
@@ -90,10 +123,11 @@ class _AttendancePageState extends State<AttendancePage> {
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 1
                   ),
-                  itemCount: names.length,
+                  itemCount: signedOut.length,
                   itemBuilder: (BuildContext context, index) {
                     i = index;
-                    String signin = 'Would you like to sign-in ' + names[i]['name'] + '?';
+                    String signin = 'Would you like to sign-in ' + signedOut[i]['name'] + '?';
+                    int id = signedOut[i]['child_id'] as int;
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -115,7 +149,9 @@ class _AttendancePageState extends State<AttendancePage> {
                                     ),
                                     TextButton(
                                       child: const Text('Yes'),
-                                      onPressed: () => Navigator.pop(context, 'Yes'),
+                                      onPressed: () {//int.parse(_signInChild(signedOut[i]['child_id']).toString());
+                                          _signInChild(id);
+                                        }
                                     ),
                                   ],
                                 ),
@@ -134,7 +170,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(signedOut[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
