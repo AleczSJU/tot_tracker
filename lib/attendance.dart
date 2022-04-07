@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tot_tracker/checkin.dart';
-import 'package:tot_tracker/checkout.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 List names = [];
+List signedIn = [];
+List signedOut = [];
 int i = 0;
 
 class AttendancePage extends StatefulWidget {
@@ -16,27 +16,77 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
 
-  getChildNames()async {
+  // getChildNames()async {
+  //   //Local usage
+  //   //var url = Uri.http('10.0.0.144', 'getChildNames.php');
+  //   //Non-local usage
+  //   var url = Uri.http('68.82.13.214', 'getChildNames.php');
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       names = json.decode(response.body);
+  //     });
+  //     print(names);
+  //     print(names.length);
+  //     return names;
+  //   }
+  // }
+
+  getSignedIn()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getChildNames.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
-        names = json.decode(response.body);
+        signedIn = json.decode(response.body);
       });
-      print(names);
-      print(names.length);
-      return names;
     }
+    print(signedIn);
+    print(signedIn.length);
+    return signedIn;
+  }
+
+  getSignedOut()async {
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        signedOut = json.decode(response.body);
+      });
+    }
+    print(signedOut);
+    print(signedOut.length);
+    return signedOut;
   }
 
   @override
   void initState() {
     super.initState();
-    getChildNames();
+    //getChildNames();
+    getSignedIn();
+    getSignedOut();
     //print(names);
+  }
+
+  _signInChild(int child_id)async{
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'signIn.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'signIn.php', {"childid":child_id});
+    var response = await http.get(url);
+    // if (response.statusCode == 200) {
+    //   setState(() {
+    //     signedOut = json.decode(response.body);
+    //   });
+    // }
+    // print(signedOut);
+    // print(signedOut.length);
+    // return signedOut;
   }
 
   @override
@@ -56,8 +106,8 @@ class _AttendancePageState extends State<AttendancePage> {
               preferredSize: Size.fromHeight(30.0),
               child: TabBar(
                 tabs: [
-                  Tab(text: "Check-in"),
-                  Tab(text: "Check-out"),
+                  Tab(text: "Sign-in"),
+                  Tab(text: "Sign-out"),
                 ],
               ),
             ),
@@ -73,10 +123,11 @@ class _AttendancePageState extends State<AttendancePage> {
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 1
                   ),
-                  itemCount: names.length,
+                  itemCount: signedOut.length,
                   itemBuilder: (BuildContext context, index) {
                     i = index;
-                    String signin = 'Would you like to sign-in ' + names[i]['name'] + '?';
+                    String signin = 'Would you like to sign-in ' + signedOut[i]['name'] + '?';
+                    int id = signedOut[i]['child_id'] as int;
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -89,7 +140,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               onTap: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Check-in'),
+                                  title: const Text('Sign-in'),
                                   content: Text(signin),
                                   actions: <Widget>[
                                     TextButton(
@@ -98,7 +149,9 @@ class _AttendancePageState extends State<AttendancePage> {
                                     ),
                                     TextButton(
                                       child: const Text('Yes'),
-                                      onPressed: () => Navigator.pop(context, 'Yes'),
+                                      onPressed: () {//int.parse(_signInChild(signedOut[i]['child_id']).toString());
+                                          _signInChild(id);
+                                        }
                                     ),
                                   ],
                                 ),
@@ -117,7 +170,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(signedOut[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
@@ -135,10 +188,10 @@ class _AttendancePageState extends State<AttendancePage> {
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 1
                   ),
-                  itemCount: names.length,
+                  itemCount: signedIn.length,
                   itemBuilder: (BuildContext context, index) {
                     i = index;
-                    String signout = 'Would you like to sign-out ' + names[i]['name'] + '?';
+                    String signout = 'Would you like to sign-out ' + signedIn[i]['name'] + '?';
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -151,7 +204,7 @@ class _AttendancePageState extends State<AttendancePage> {
                               onTap: () => showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Check-in'),
+                                  title: const Text('Sign-in'),
                                   content: Text(signout),
                                   actions: <Widget>[
                                     TextButton(
@@ -179,7 +232,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(names[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(signedIn[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )
