@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tot_tracker/dashboard.dart';
 
 List names = [];
 List signedIn = [];
 List signedOut = [];
 int i = 0;
+int j = 0;
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -34,9 +36,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getSignedIn()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
+    var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -50,9 +52,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getSignedOut()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -73,11 +75,27 @@ class _AttendancePageState extends State<AttendancePage> {
     //print(names);
   }
 
-  _signInChild(int child_id)async{
+  _signInChild(String childName)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'signIn.php', {"childid":child_id});
+    //var url = Uri.http('10.0.0.144', 'signIn.php', {"childName":childName});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'signIn.php', {"childid":child_id});
+    var url = Uri.http('68.82.13.214', 'signIn.php', {"childName":childName});
+    var response = await http.get(url);
+    // if (response.statusCode == 200) {
+    //   setState(() {
+    //     signedOut = json.decode(response.body);
+    //   });
+    // }
+    // print(signedOut);
+    // print(signedOut.length);
+    // return signedOut;
+  }
+
+  _signOutChild(String childName)async{
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'signOut.php', {"childName":childName});
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'signOut.php', {"childName":childName});
     var response = await http.get(url);
     // if (response.statusCode == 200) {
     //   setState(() {
@@ -100,7 +118,7 @@ class _AttendancePageState extends State<AttendancePage> {
           appBar: AppBar(
             leading: BackButton(
               color: Colors.white,
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashboardPage())),
             ),
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(30.0),
@@ -127,8 +145,7 @@ class _AttendancePageState extends State<AttendancePage> {
                   itemBuilder: (BuildContext context, index) {
                     i = index;
                     String signin = 'Would you like to sign-in ' + signedOut[i]['name'] + '?';
-                    var id = int.parse(signedOut[i]['child_id']);
-                    assert(id is int);
+                    //int id = signedOut[i]['child_id'] as int;
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -150,9 +167,12 @@ class _AttendancePageState extends State<AttendancePage> {
                                     ),
                                     TextButton(
                                       child: const Text('Yes'),
-                                      onPressed: () {//_signInChild(signedOut[i]['child_id']);
-                                          _signInChild(id);
-                                        }
+                                      onPressed: () {
+                                        _signInChild(signedOut[index]['name']);
+                                        //Navigator.pop(context, 'Yes');
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
+                                          //_signInChild(id);
+                                      }
                                     ),
                                   ],
                                 ),
@@ -191,8 +211,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   ),
                   itemCount: signedIn.length,
                   itemBuilder: (BuildContext context, index) {
-                    i = index;
-                    String signout = 'Would you like to sign-out ' + signedIn[i]['name'] + '?';
+                    j = index;
+                    String signout = 'Would you like to sign-out ' + signedIn[j]['name'] + '?';
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -214,7 +234,11 @@ class _AttendancePageState extends State<AttendancePage> {
                                     ),
                                     TextButton(
                                       child: const Text('Yes'),
-                                      onPressed: () => Navigator.pop(context, 'Yes'),
+                                      onPressed: () {
+                                        _signOutChild(signedIn[index]['name']);
+                                        //Navigator.pop(context, 'Yes');
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
+                                        },
                                     ),
                                   ],
                                 ),
@@ -233,7 +257,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                           )
                                       ),
                                     ),
-                                    Text(signedIn[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                                    Text(signedIn[j]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                                   ],
                                 ),
                               )

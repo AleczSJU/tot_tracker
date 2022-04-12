@@ -14,11 +14,6 @@ class ClassroomsPage extends StatefulWidget {
 }
 
 class _ClassroomsPageState extends State<ClassroomsPage> {
-  List<Tab> _tabs = <Tab>[];
-  List<Widget> _tabViews = [];
-  List<dynamic> tabNames = [];
-  var numTabs = 0;
-  late TabController _tabController;
 
   getAllClassrooms()async{
     //Local usage
