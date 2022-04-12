@@ -34,9 +34,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getSignedIn()async {
     //Local usage
-    //var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
+    var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
     //Non-local usage
-    var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
+    //var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -50,9 +50,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getSignedOut()async {
     //Local usage
-    //var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
+    var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
     //Non-local usage
-    var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    //var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -75,9 +75,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   _signInChild(int child_id)async{
     //Local usage
-    //var url = Uri.http('10.0.0.144', 'signIn.php');
+    var url = Uri.http('10.0.0.144', 'signIn.php', {"childid":child_id});
     //Non-local usage
-    var url = Uri.http('68.82.13.214', 'signIn.php', {"childid":child_id});
+    //var url = Uri.http('68.82.13.214', 'signIn.php', {"childid":child_id});
     var response = await http.get(url);
     // if (response.statusCode == 200) {
     //   setState(() {
@@ -127,7 +127,8 @@ class _AttendancePageState extends State<AttendancePage> {
                   itemBuilder: (BuildContext context, index) {
                     i = index;
                     String signin = 'Would you like to sign-in ' + signedOut[i]['name'] + '?';
-                    int id = signedOut[i]['child_id'] as int;
+                    var id = int.parse(signedOut[i]['child_id']);
+                    assert(id is int);
                     return Container(
                       alignment: Alignment.center,
                       //child: _sendDataToCheckIn(names[index]),
@@ -149,7 +150,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                     ),
                                     TextButton(
                                       child: const Text('Yes'),
-                                      onPressed: () {//int.parse(_signInChild(signedOut[i]['child_id']).toString());
+                                      onPressed: () {//_signInChild(signedOut[i]['child_id']);
                                           _signInChild(id);
                                         }
                                     ),
