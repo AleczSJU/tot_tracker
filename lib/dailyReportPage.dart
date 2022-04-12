@@ -41,6 +41,7 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
   //   //print(names);
   // }
 
+
   @override
   Widget build(BuildContext context) {
     name = widget.className;
@@ -73,24 +74,6 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: children[index]['name'])));
                   },
-                  //   onTap: () => showDialog<String>(
-                  //     context: context,
-                  //     builder: (BuildContext context) => AlertDialog(
-                  //       title: const Text('Check-in'),
-                  //       content: Text(signin),
-                  //       actions: <Widget>[
-                  //         TextButton(
-                  //           child: const Text('Cancel'),
-                  //           onPressed: () => Navigator.pop(context, 'Cancel'),
-                  //         ),
-                  //         TextButton(
-                  //           child: const Text('Yes'),
-                  //           onPressed: () => Navigator.pop(context, 'Yes'),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     //setState(() {});
-                  //   ),
                     splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
                     child: Center(
                       child: Column(

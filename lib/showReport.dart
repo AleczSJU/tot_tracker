@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:intl/intl.dart';
 
 List reports = [];
 int i = 0;
@@ -17,6 +15,7 @@ class ShowChildReportPage extends StatefulWidget {
 
 class _ChildDailyReportPageState extends State<ShowChildReportPage> {
   String name = '';
+  String cName = '';
   String report = '';
   late TextEditingController controller;
 
@@ -24,6 +23,7 @@ class _ChildDailyReportPageState extends State<ShowChildReportPage> {
   void initState() {
     super.initState();
     controller = TextEditingController();
+    reports = [];
   }
 
   @override
