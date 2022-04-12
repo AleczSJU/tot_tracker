@@ -3,6 +3,9 @@ import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+List plans = [];
+int i = 0;
+
 class Calendar extends StatefulWidget {
   const Calendar({Key? key, required this.className}) : super(key: key);
   final String className;
@@ -17,9 +20,26 @@ class _CalendarState extends State<Calendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  getLessonPlans()async{
+    //Local usage
+    var url = Uri.http('10.0.0.144', 'getLessonPlan.php', {"className":name});
+    //Non-local usage
+    //var url = Uri.http('68.82.13.214', 'getLessonPlans.php', {"className":name});
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        plans = json.decode(response.body);
+      });
+      print(plans);
+      print(plans.length);
+      return plans;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     name = widget.className;
+    getLessonPlans();
     return Scaffold(
       body: TableCalendar(
         firstDay: DateTime.utc(2010, 10, 16),

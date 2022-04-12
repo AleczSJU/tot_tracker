@@ -32,10 +32,6 @@ class _RoomPageState extends State<RoomPage> {
       body: Center(
         child: Calendar(className: name),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

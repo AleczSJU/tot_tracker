@@ -22,7 +22,7 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
     //Local usage
     var url = Uri.http('10.0.0.144', 'getChildrenInRoom.php', {"className":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getClassrooms.php');
+    //var url = Uri.http('68.82.13.214', 'getChildrenInRoom.php', {"className":name});
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -71,7 +71,7 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
                 color: Colors.white,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowChildReportPage(child_id: children[i]['child_id'])));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: children[index]['name'])));
                   },
                   //   onTap: () => showDialog<String>(
                   //     context: context,
@@ -104,7 +104,7 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
                                 )
                             ),
                           ),
-                          Text(children[i]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
+                          Text(children[index]['name'], style: TextStyle(color: Colors.black, height: 4.0, fontSize: 12)),
                         ],
                       ),
                     )
