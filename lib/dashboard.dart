@@ -4,6 +4,9 @@ import 'package:tot_tracker/attendance.dart';
 import 'package:tot_tracker/dailyReport.dart';
 import 'package:tot_tracker/staff.dart';
 import 'package:tot_tracker/classrooms.dart';
+import 'package:tot_tracker/children.dart';
+import 'package:tot_tracker/teachers.dart';
+import 'package:tot_tracker/classes.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -114,7 +117,38 @@ class _DashboardPageState extends State<DashboardPage> {
               )
           ),
         ],
-      )
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Children'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChildrenPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Teachers'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Classrooms'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ClassesPage()));
+              },
+            ),
+          ],
+        )
+      ),
     );
   }
 }

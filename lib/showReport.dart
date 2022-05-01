@@ -52,7 +52,7 @@ class _ChildDailyReportPageState extends State<ShowChildReportPage> {
     //Local usage
     var url = Uri.http('10.0.0.144', 'makeReport.php', {"report":newReport, "childName":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getReport.php', {"childName":name});
+    //var url = Uri.http('68.82.13.214', 'makeReport.php', {"report":newReport, "childName":name});
     var response = await http.get(url);
   }
 
@@ -75,7 +75,6 @@ class _ChildDailyReportPageState extends State<ShowChildReportPage> {
             itemCount: reports.length,
             itemBuilder: (BuildContext context, int index){
               i = index;
-              //String date = DateFormat('yyyy-MM-dd – kk:mm').format(reports[index]['date']);
               return Card(
                 elevation: 6,
                 margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),

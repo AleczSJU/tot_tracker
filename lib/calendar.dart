@@ -22,9 +22,9 @@ class _CalendarState extends State<Calendar> {
 
   getLessonPlans()async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getLessonPlan.php', {"className":name});
+    //var url = Uri.http('10.0.0.144', 'getLessonPlan.php', {"className":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getLessonPlans.php', {"className":name});
+    var url = Uri.http('68.82.13.214', 'getLessonPlan.php', {"className":name});
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {

@@ -73,6 +73,8 @@ class _AttendancePageState extends State<AttendancePage> {
     getSignedIn();
     getSignedOut();
     //print(names);
+    signedIn = [];
+    signedOut = [];
   }
 
   _signInChild(String childName)async{
@@ -124,8 +126,8 @@ class _AttendancePageState extends State<AttendancePage> {
               preferredSize: Size.fromHeight(30.0),
               child: TabBar(
                 tabs: [
-                  Tab(text: "Sign-in"),
-                  Tab(text: "Sign-out"),
+                  Tab(text: "Signed-out"),
+                  Tab(text: "Signed-in"),
                 ],
               ),
             ),

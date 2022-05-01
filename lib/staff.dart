@@ -37,7 +37,7 @@ class _StaffPageState extends State<StaffPage> {
     //Local usage
     var url = Uri.http('10.0.0.144', 'getTeachersSignedIn.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
+    //var url = Uri.http('68.82.13.214', 'getTeachersSignedIn.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -53,7 +53,7 @@ class _StaffPageState extends State<StaffPage> {
     //Local usage
     var url = Uri.http('10.0.0.144', 'getTeachersSignedOut.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    //var url = Uri.http('68.82.13.214', 'getTeachersSignedOut.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -72,9 +72,12 @@ class _StaffPageState extends State<StaffPage> {
     getSignedIn();
     getSignedOut();
     //print(names);
+    teachers = [];
+    signedIn = [];
+    signedOut = [];
   }
 
-  _signInChild(String teacherName)async{
+  _signInTeacher(String teacherName)async{
     //Local usage
     var url = Uri.http('10.0.0.144', 'teacherSignIn.php', {"teacherName":teacherName});
     //Non-local usage
@@ -82,7 +85,7 @@ class _StaffPageState extends State<StaffPage> {
     var response = await http.get(url);
   }
 
-  _signOutChild(String teacherName)async{
+  _signOutTeacher(String teacherName)async{
     //Local usage
     var url = Uri.http('10.0.0.144', 'teacherSignOut.php', {"teacherName":teacherName});
     //Non-local usage
@@ -105,8 +108,8 @@ class _StaffPageState extends State<StaffPage> {
                 preferredSize: Size.fromHeight(30.0),
                 child: TabBar(
                   tabs: [
-                    Tab(text: "Sign-in"),
-                    Tab(text: "Sign-out"),
+                    Tab(text: "Signed-out"),
+                    Tab(text: "Signed-in"),
                   ],
                 ),
               ),
@@ -149,7 +152,7 @@ class _StaffPageState extends State<StaffPage> {
                                       TextButton(
                                           child: const Text('Yes'),
                                           onPressed: () {
-                                            _signInChild(signedOut[index]['name']);
+                                            _signInTeacher(signedOut[index]['name']);
                                             //Navigator.pop(context, 'Yes');
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => StaffPage()));
                                             //_signInChild(id);
@@ -216,7 +219,7 @@ class _StaffPageState extends State<StaffPage> {
                                       TextButton(
                                         child: const Text('Yes'),
                                         onPressed: () {
-                                          _signOutChild(signedIn[index]['name']);
+                                          _signOutTeacher(signedIn[index]['name']);
                                           //Navigator.pop(context, 'Yes');
                                           Navigator.push(context, MaterialPageRoute(builder: (context) => StaffPage()));
                                         },
