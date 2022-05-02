@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
       //Appbar is used to have a back arrow at top of screen when logging in
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {

@@ -17,23 +17,6 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-
-  // getChildNames()async {
-  //   //Local usage
-  //   //var url = Uri.http('10.0.0.144', 'getChildNames.php');
-  //   //Non-local usage
-  //   var url = Uri.http('68.82.13.214', 'getChildNames.php');
-  //   var response = await http.get(url);
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       names = json.decode(response.body);
-  //     });
-  //     print(names);
-  //     print(names.length);
-  //     return names;
-  //   }
-  // }
-
   getSignedIn()async {
     //Local usage
     var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');

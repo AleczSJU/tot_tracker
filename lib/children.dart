@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tot_tracker/dashboard.dart';
 import 'package:tot_tracker/addChild.dart';
+import 'package:tot_tracker/childCard.dart';
 
 List children = [];
 
@@ -25,8 +26,8 @@ class _ChildrenPageState extends State<ChildrenPage> {
         children = json.decode(response.body);
       });
     }
-    print(children);
-    print(children.length);
+    //print(children);
+    //print(children.length);
     return children;
   }
 
@@ -63,11 +64,14 @@ class _ChildrenPageState extends State<ChildrenPage> {
         ),
         itemCount: children.length,
         itemBuilder: (BuildContext context, index) {
+          //i= index;
           return Container(
             child: Card(
               color: Colors.white,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChildCardPage(childName: children[index]['name'])));
+                },
                 splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

@@ -14,7 +14,7 @@ class ClassesPage extends StatefulWidget {
 }
 
 class _ClassesPageState extends State<ClassesPage> {
-  getTeachers()async {
+  getClassrooms()async {
     //Local usage
     var url = Uri.http('10.0.0.144', 'getClassrooms.php');
     //Non-local usage
@@ -34,7 +34,7 @@ class _ClassesPageState extends State<ClassesPage> {
   void initState() {
     super.initState();
     classrooms = [];
-    getTeachers();
+    getClassrooms();
   }
 
   @override
