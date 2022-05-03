@@ -14,19 +14,41 @@ class _AddChildPageState extends State<AddChildPage> {
   String name = '';
   String age = '';
   String gender = '';
-  String classroom = '';
+  String? classroom = null;
+  List roomNames = [];
+  List<String> _classrooms = [];
+
+  getAllClassrooms()async{
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'getClassrooms.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'getClassrooms.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        roomNames = json.decode(response.body);
+      });
+      //print(roomNames);
+      //print(roomNames.length);
+      for(int i = 0; i<roomNames.length; i++) {
+        _classrooms.insert(i, roomNames[i]['name']);
+      }
+      return roomNames;
+    }
+  }
 
   _submit()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'addChild.php', {"name":name, "age":age, "gender":gender, "classroom":classroom});
+    //var url = Uri.http('10.0.0.144', 'addChild.php', {"name":name, "age":age, "gender":gender, "classroom":classroom});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'addChild.php', {"name":name, "age":age, "gender":gender, "classroom":classroom});
+    var url = Uri.http('68.82.13.214', 'addChild.php', {"name":name, "age":age, "gender":gender, "classroom":classroom});
     var response = await http.get(url);
   }
 
   @override
   void initState() {
     super.initState();
+    getAllClassrooms();
   }
 
   @override
@@ -53,6 +75,8 @@ class _AddChildPageState extends State<AddChildPage> {
                     return 'Name cannot be empty';
                   }
                 },
+                // minLines: 3,
+                // maxLines: 6,
                 onSaved: (value) {
                   name = value!;
                 },
@@ -81,17 +105,21 @@ class _AddChildPageState extends State<AddChildPage> {
                   gender = value!;
                 },
               ),
-              TextFormField(
+              DropdownButtonFormField(
                 decoration: InputDecoration(labelText: 'Classroom'),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Classroom cannot be empty';
-                  }
+                validator: (value) => value == null ? "Select a classroom" : null,
+                value: classroom,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    classroom = newValue!;
+                  });
                 },
-                onSaved: (value) {
-                  classroom = value!;
-                },
+                items: _classrooms.map((location) {
+                  return DropdownMenuItem(
+                    child: new Text(location),
+                    value: location,
+                  );
+                }).toList(),
               ),
               SizedBox(height: 20),
               ElevatedButton(
@@ -101,10 +129,10 @@ class _AddChildPageState extends State<AddChildPage> {
                     return;
                   }
                   _formKey.currentState!.save();
-                  print(name);
-                  print(age);
-                  print(gender);
-                  print(classroom);
+                  // print(name);
+                  // print(age);
+                  // print(gender);
+                  // print(classroom);
                   _submit();
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChildrenPage()));
                 },

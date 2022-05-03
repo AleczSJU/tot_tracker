@@ -21,13 +21,13 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        actions: const [
-          IconButton(
-            icon: Icon(Icons.add_a_photo),
-            tooltip: 'Search',
-            onPressed: null,
-          ),
-        ],
+        // actions: const [
+        //   IconButton(
+        //     icon: Icon(Icons.add_a_photo),
+        //     tooltip: 'Search',
+        //     onPressed: null,
+        //   ),
+        // ],
       ),
       body: GridView.count(
         primary: false,
@@ -126,7 +126,9 @@ class _DashboardPageState extends State<DashboardPage> {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Text('Drawer Header'),
+              child: Image(
+                  image: AssetImage("assets/teacher.png")
+              ),
             ),
             ListTile(
               title: const Text('Children'),
@@ -144,6 +146,13 @@ class _DashboardPageState extends State<DashboardPage> {
               title: const Text('Classrooms'),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ClassesPage()));
+              },
+            ),
+            SizedBox(height: 400),
+            ListTile(
+              title: const Text('Sign out'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage()));
               },
             ),
           ],

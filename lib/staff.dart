@@ -35,9 +35,9 @@ class _StaffPageState extends State<StaffPage> {
 
   getSignedIn()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getTeachersSignedIn.php');
+    //var url = Uri.http('10.0.0.144', 'getTeachersSignedIn.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getTeachersSignedIn.php');
+    var url = Uri.http('68.82.13.214', 'getTeachersSignedIn.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -51,9 +51,9 @@ class _StaffPageState extends State<StaffPage> {
 
   getSignedOut()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getTeachersSignedOut.php');
+    //var url = Uri.http('10.0.0.144', 'getTeachersSignedOut.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getTeachersSignedOut.php');
+    var url = Uri.http('68.82.13.214', 'getTeachersSignedOut.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -79,17 +79,17 @@ class _StaffPageState extends State<StaffPage> {
 
   _signInTeacher(String teacherName)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'teacherSignIn.php', {"teacherName":teacherName});
+    //var url = Uri.http('10.0.0.144', 'teacherSignIn.php', {"teacherName":teacherName});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'teacherSignIn.php', {"teacherName":teacherName});
+    var url = Uri.http('68.82.13.214', 'teacherSignIn.php', {"teacherName":teacherName});
     var response = await http.get(url);
   }
 
   _signOutTeacher(String teacherName)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'teacherSignOut.php', {"teacherName":teacherName});
+    //var url = Uri.http('10.0.0.144', 'teacherSignOut.php', {"teacherName":teacherName});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'teacherSignOut.php', {"teacherName":teacherName});
+    var url = Uri.http('68.82.13.214', 'teacherSignOut.php', {"teacherName":teacherName});
     var response = await http.get(url);
   }
 

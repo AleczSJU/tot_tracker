@@ -16,9 +16,9 @@ class _AddClassPageState extends State<AddClassPage> {
 
   _submit()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'addClass.php', {"name":name});
+    //var url = Uri.http('10.0.0.144', 'addClass.php', {"name":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'addClass.php', {"name":name});
+    var url = Uri.http('68.82.13.214', 'addClass.php', {"name":name});
     var response = await http.get(url);
   }
 

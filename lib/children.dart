@@ -17,9 +17,9 @@ class ChildrenPage extends StatefulWidget {
 class _ChildrenPageState extends State<ChildrenPage> {
   getChildren()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getChildNames.php');
+    //var url = Uri.http('10.0.0.144', 'getChildNames.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildNames.php');
+    var url = Uri.http('68.82.13.214', 'getChildNames.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {

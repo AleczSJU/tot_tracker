@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tot_tracker/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:tot_tracker/classrooms.dart';
+import 'package:tot_tracker/addPlan.dart';
 
 List plans = [];
 //int i = 0;
@@ -25,6 +26,7 @@ class _RoomPageState extends State<RoomPage> {
   String cDay= '';
   String nDay = '';
   String plan = '';
+  String planDate = '';
   late TextEditingController controller;
 
   @override
@@ -43,9 +45,9 @@ class _RoomPageState extends State<RoomPage> {
   getPlansForDay(String currentDay, String nextDay)async{
     plans = [];
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getPlansForDay.php', {"currentDay":currentDay, "nextDay":nextDay, "className":name});
+    //var url = Uri.http('10.0.0.144', 'getPlansForDay.php', {"currentDay":currentDay, "nextDay":nextDay, "className":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getPlansForDay.php', {"currentDay":currentDay, "nextDay":nextDay});
+    var url = Uri.http('68.82.13.214', 'getPlansForDay.php', {"currentDay":currentDay, "nextDay":nextDay, "className":name});
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -59,9 +61,17 @@ class _RoomPageState extends State<RoomPage> {
 
   makePlan(String newPlan)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'makePlan.php', {"plan":newPlan, "className":name, "date":cDay});
+    //var url = Uri.http('10.0.0.144', 'makePlan.php', {"plan":newPlan, "className":name, "date":cDay});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'makePlan.php', {"plan":newPlan, "className":name});
+    var url = Uri.http('68.82.13.214', 'makePlan.php', {"plan":newPlan, "className":name, "date":cDay});
+    var response = await http.get(url);
+  }
+
+  deletePlan(String lessonplan_id)async {
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'deletePlan.php', {"planid":lessonplan_id});
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'deletePlan.php', {"planid":lessonplan_id});
     var response = await http.get(url);
   }
 
@@ -73,7 +83,9 @@ class _RoomPageState extends State<RoomPage> {
         centerTitle: true,
         leading: BackButton(
           color: Colors.white,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage()));
+          },
         ),
         title: Text(name),
       ),
@@ -116,15 +128,36 @@ class _RoomPageState extends State<RoomPage> {
             child: ListView.builder(
                 itemCount: plans.length,
                 itemBuilder: (BuildContext context, int index){
-                  i = index;
+                  //i = index;
                   return Card(
                     elevation: 6,
                     margin: EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
                     child: ListTile(
                       //minVerticalPadding: 10,
                       title: Text(plans[index]['plan']),
-                      trailing: Text(plans[index]['date']),
+                      //trailing: Text(plans[index]['date']),
                       contentPadding: EdgeInsets.all(20.0),
+                      onTap: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Sign-in'),
+                          content: const Text('Would you like to delete the report?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                            ),
+                            TextButton(
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                deletePlan(plans[index]['lessonplan_id']);
+                                //Navigator.pop(context, 'Yes');
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => RoomPage(className: name)));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0)
@@ -138,11 +171,14 @@ class _RoomPageState extends State<RoomPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          final plan = await newPlan();
-          if (plan == null || plan.isEmpty) return;
-
-          makePlan(plan);
-          setState(() => this.plan = plan);
+          final date = _focusedDay.add(new Duration(hours: 1));
+          planDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPlanPage(className: name, planDate: planDate)));
+          // final plan = await newPlan();
+          // if (plan == null || plan.isEmpty) return;
+          //
+          // makePlan(plan);
+          // setState(() => this.plan = plan);
         },
       ),
     );

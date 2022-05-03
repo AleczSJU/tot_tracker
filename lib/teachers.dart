@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tot_tracker/dashboard.dart';
 import 'package:tot_tracker/addTeacher.dart';
+import 'package:tot_tracker/teacherCard.dart';
 
 List teachers = [];
 
@@ -16,9 +17,9 @@ class TeacherPage extends StatefulWidget {
 class _TeacherPageState extends State<TeacherPage> {
   getTeachers()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getAllTeachers.php');
+    //var url = Uri.http('10.0.0.144', 'getAllTeachers.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getAllTeachers.php');
+    var url = Uri.http('68.82.13.214', 'getAllTeachers.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -67,7 +68,9 @@ class _TeacherPageState extends State<TeacherPage> {
             child: Card(
               color: Colors.white,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => TeacherCardPage(tName: teachers[index]['name'])));
+                },
                 splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

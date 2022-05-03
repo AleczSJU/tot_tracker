@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tot_tracker/dailyReportPage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tot_tracker/dashboard.dart';
 
 List roomNames = [];
 int i = 0;
@@ -16,9 +17,9 @@ class DailyReportPage extends StatefulWidget {
 class _DailyReportPageState extends State<DailyReportPage> {
   getAllClassrooms()async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getClassrooms.php');
+    //var url = Uri.http('10.0.0.144', 'getClassrooms.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getClassrooms.php');
+    var url = Uri.http('68.82.13.214', 'getClassrooms.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -43,7 +44,9 @@ class _DailyReportPageState extends State<DailyReportPage> {
         centerTitle: true,
         leading: BackButton(
           color: Colors.white,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
+          },
         ),
         title: const Text('Classrooms'),
       ),

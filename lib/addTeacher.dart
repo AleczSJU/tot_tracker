@@ -16,19 +16,41 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
   String gender = '';
   String email = '';
   String phoneNumber = '';
-  String classroom = '';
+  String? classroom = null;
+  List roomNames = [];
+  List<String> _classrooms = [];
+
+  getAllClassrooms()async{
+    //Local usage
+    //var url = Uri.http('10.0.0.144', 'getClassrooms.php');
+    //Non-local usage
+    var url = Uri.http('68.82.13.214', 'getClassrooms.php');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      setState(() {
+        roomNames = json.decode(response.body);
+      });
+      //print(roomNames);
+      //print(roomNames.length);
+      for(int i = 0; i<roomNames.length; i++) {
+        _classrooms.insert(i, roomNames[i]['name']);
+      }
+      return roomNames;
+    }
+  }
 
   _submit()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'addTeacher.php', {"name":name, "age":age, "gender":gender, "email":email, "phoneNumber":phoneNumber, "classroom":classroom});
+    //var url = Uri.http('10.0.0.144', 'addTeacher.php', {"name":name, "age":age, "gender":gender, "email":email, "phoneNumber":phoneNumber, "classroom":classroom});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'addTeacher.php', {"name":name, "age":age, "gender":gender, "email":email, "phoneNumber":phoneNumber, "classroom":classroom});
+    var url = Uri.http('68.82.13.214', 'addTeacher.php', {"name":name, "age":age, "gender":gender, "email":email, "phoneNumber":phoneNumber, "classroom":classroom});
     var response = await http.get(url);
   }
 
   @override
   void initState() {
     super.initState();
+    getAllClassrooms();
   }
 
   @override
@@ -107,17 +129,21 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
                   phoneNumber = value!;
                 },
               ),
-              TextFormField(
+              DropdownButtonFormField(
                 decoration: InputDecoration(labelText: 'Classroom'),
-                keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Classroom cannot be empty';
-                  }
+                validator: (value) => value == null ? "Select a classroom" : null,
+                value: classroom,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    classroom = newValue!;
+                  });
                 },
-                onSaved: (value) {
-                  classroom = value!;
-                },
+                items: _classrooms.map((location) {
+                  return DropdownMenuItem(
+                    child: new Text(location),
+                    value: location,
+                  );
+                }).toList(),
               ),
               SizedBox(height: 20),
               ElevatedButton(

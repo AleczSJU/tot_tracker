@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tot_tracker/showReport.dart';
+import 'package:tot_tracker/dailyReport.dart';
 
-List children = [];
-int i = 0;
-String cName = '';
 
 class ClassroomDailyReportPage extends StatefulWidget {
   const ClassroomDailyReportPage({Key? key, required this.className}) : super(key: key);
@@ -17,12 +15,15 @@ class ClassroomDailyReportPage extends StatefulWidget {
 
 class _DailyReportPageState extends State<ClassroomDailyReportPage> {
   String name = '';
+  List children = [];
+  int i = 0;
+  String cName = '';
 
   getChildrenInRoom()async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getChildrenInRoom.php', {"className":name});
+    //var url = Uri.http('10.0.0.144', 'getChildrenInRoom.php', {"className":name});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getChildrenInRoom.php', {"className":name});
+    var url = Uri.http('68.82.13.214', 'getChildrenInRoom.php', {"className":name});
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -34,12 +35,11 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getChildrenInRoom();
-  //   //print(names);
-  // }
+  @override
+  void initState() {
+    super.initState();
+    children = [];
+  }
 
 
   @override
@@ -51,7 +51,9 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
         centerTitle: true,
         leading: BackButton(
           color: Colors.white,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DailyReportPage()));
+          },
         ),
         title: Text(name),
       ),
@@ -72,7 +74,7 @@ class _DailyReportPageState extends State<ClassroomDailyReportPage> {
                 color: Colors.white,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: children[index]['name'])));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: children[index]['name'], className: name)));
                   },
                     splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
                     child: Center(

@@ -19,9 +19,9 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
   getSignedIn()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedInChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
+    var url = Uri.http('68.82.13.214', 'getSignedInChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -35,9 +35,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   getSignedOut()async {
     //Local usage
-    var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
+    //var url = Uri.http('10.0.0.144', 'getSignedOutChildren.php');
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
+    var url = Uri.http('68.82.13.214', 'getSignedOutChildren.php');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       setState(() {
@@ -62,9 +62,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   _signInChild(String childName)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'signIn.php', {"childName":childName});
+    //var url = Uri.http('10.0.0.144', 'signIn.php', {"childName":childName});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'signIn.php', {"childName":childName});
+    var url = Uri.http('68.82.13.214', 'signIn.php', {"childName":childName});
     var response = await http.get(url);
     // if (response.statusCode == 200) {
     //   setState(() {
@@ -78,9 +78,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   _signOutChild(String childName)async{
     //Local usage
-    var url = Uri.http('10.0.0.144', 'signOut.php', {"childName":childName});
+    //var url = Uri.http('10.0.0.144', 'signOut.php', {"childName":childName});
     //Non-local usage
-    //var url = Uri.http('68.82.13.214', 'signOut.php', {"childName":childName});
+    var url = Uri.http('68.82.13.214', 'signOut.php', {"childName":childName});
     var response = await http.get(url);
     // if (response.statusCode == 200) {
     //   setState(() {
@@ -238,7 +238,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
                                               image: AssetImage("assets/teacher.png"),
-                                            fit: BoxFit.cover,
+                                            //fit: BoxFit.cover,
                                           )
                                       ),
                                     ),

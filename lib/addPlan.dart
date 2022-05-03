@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tot_tracker/showReport.dart';
+import 'package:tot_tracker/roomPage.dart';
 
-class AddReportPage extends StatefulWidget {
-  const AddReportPage({Key? key, required this.childName, required this.className}) : super(key: key);
-  final String childName;
+class AddPlanPage extends StatefulWidget {
+  const AddPlanPage({Key? key, required this.className, required this.planDate}) : super(key: key);
   final String className;
+  final String planDate;
 
   @override
-  _AddReportPageState createState() => _AddReportPageState();
+  _AddPlanPageState createState() => _AddPlanPageState();
 }
 
-class _AddReportPageState extends State<AddReportPage> {
+class _AddPlanPageState extends State<AddPlanPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   String name = '';
-  String report = '';
-  String cName = '';
+  String plan = '';
+  String date = '';
 
   @override
   void initState() {
@@ -25,23 +25,23 @@ class _AddReportPageState extends State<AddReportPage> {
 
   _submit()async {
     //Local usage
-    //var url = Uri.http('10.0.0.144', 'makeReport.php', {"report":newReport, "childName":name});
+    //var url = Uri.http('10.0.0.144', 'makePlan.php', {"plan":plan, "className":name, "date":date});
     //Non-local usage
-    var url = Uri.http('68.82.13.214', 'makeReport.php', {"report":report, "childName":name});
+    var url = Uri.http('68.82.13.214', 'makePlan.php', {"plan":plan, "className":name, "date":date});
     var response = await http.get(url);
   }
 
   @override
   Widget build(BuildContext context) {
-    name = widget.childName;
-    cName = widget.className;
+    name = widget.className;
+    date = widget.planDate;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.white),
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: name, className: cName))),
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RoomPage(className: name))),
         ),
-        title: const Text('Make a report'),
+        title: const Text('Create a lesson plan'),
       ),
       body: Container(
         margin: EdgeInsets.all(24),
@@ -50,17 +50,17 @@ class _AddReportPageState extends State<AddReportPage> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'New Report:'),
+                decoration: InputDecoration(labelText: 'New Plan:'),
                 keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Report cannot be empty';
+                    return 'Plan cannot be empty';
                   }
                 },
                 minLines: 10,
                 maxLines: 20,
                 onSaved: (value) {
-                  report = value!;
+                  plan = value!;
                 },
               ),
               SizedBox(height: 40),
@@ -76,7 +76,7 @@ class _AddReportPageState extends State<AddReportPage> {
                   // print(gender);
                   // print(classroom);
                   _submit();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowChildReportPage(childName: name, className: cName)));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => RoomPage(className: name)));
                 },
               ),
             ],
