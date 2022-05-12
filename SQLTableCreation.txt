@@ -1,0 +1,79 @@
+Create table classroom ( 
+    classroom_id  int  not null, 
+    name  varchar(45)  not null, 
+    Primary key (classroom_id) 
+); 
+
+Create table teacher ( 
+    teacher_id  int  not null, 
+    name  varchar(45)  not null, 
+    age  int  not null, 
+    gender  varchar(45)  not null, 
+    email  varchar(45)  not null, 
+    phone_number  varchar(45)  not null, 
+    classroom_id  int  not null, 
+    Primary key (teacher_id), 
+    Foreign key (classroom_id) references classroom(classroom_id),
+    CONSTRAINT `teacher_ibfk_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`classroom_id`) ON DELETE CASCADE
+); 
+
+Create table lessonPlan ( 
+    lessonplan_id  int  not null, 
+    plan varchar(5000)  not null, 
+    date DATETIME  not null, 
+    teacher_id  int  not null, 
+    classroom_id  int  not null, 
+    Primary key (lessonplan_id), 
+    Foreign key (teacher_id) references teacher(teacher_id), 
+    Foreign key (classroom_id) references classroom(classroom_id),
+    CONSTRAINT `lessonPlan_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`) ON DELETE CASCADE,
+    CONSTRAINT `lessonPlan_ibfk_2` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`classroom_id`) ON DELETE CASCADE
+); 
+
+Create table child ( 
+    child_id  int  not null, 
+    name  varchar(45)  not null, 
+    age  int  not null, 
+    gender  varchar(45)  not null, 
+    classroom_id  int  not null, 
+    Primary key (child_id), 
+    Foreign key  (classroom_id) references classroom(classroom_id),
+    CONSTRAINT `child_ibfk_1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom` (`classroom_id`) ON DELETE CASCADE
+); 
+
+ 
+
+Create table dailyReport ( 
+    report_id  int  not null, 
+    report  varchar(5000), 
+    picture  varchar(45),  
+    date DATETIME  not null, 
+    child_id  int  not null, 
+    Primary key (report_id), 
+    Foreign key (child_id) references child(child_id),
+    CONSTRAINT `dailyReport_ibfk_1` FOREIGN KEY (`child_id`) REFERENCES `child` (`child_id`) ON DELETE CASCADE
+); 
+
+ 
+
+Create table attendance ( 
+    id int not null, 
+    child_id  int  not null, 
+    status enum('check_in','check_out') not null, 
+    date DATETIME not null, 
+    Primary key (id), 
+    Foreign key (child_id) references child(child_id),
+    CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`child_id`) REFERENCES `child` (`child_id`) ON DELETE CASCADE
+); 
+
+ 
+
+Create table t_attendance ( 
+    id int not null, 
+    teacher_id  int  not null, 
+    status enum('check_in','check_out') not null, 
+    date DATETIME not null, 
+    Primary key (id), 
+    Foreign key (teacher_id) references teacher(teacher_id),
+    CONSTRAINT `t_attendance_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`) ON DELETE CASCADE
+); 
